@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Insert title here</title>
+</head>
+<body>
+<h1>Kakao Login Test</h1>
+	<span th:if="${userId==null}">
+		<a href="https://kauth.kakao.com/oauth/authorize?client_id=6449fac14761edba82e6cf5782389e45&redirect_uri=http://localhost:8080/login&response_type=code">
+			<img src = "img/kakao_login_medium_narrow.png">
+		</a>
+	</span>
+	<span th:if="${userId!=null}">
+		<form id="frm">
+			<input type="text" value="" th:value="${userId}"><br>
+			<input type="text" value="" th:value="${nickname}"><br>
+			<span th:if="${userResponseDto!=null}">
+				<input type="text" value="" th:value="${userResponseDto.nm}"><br>
+				<input type="text" value="" th:value="${userResponseDto.phone}"><br>
+			</span>
+			<span th:if="${userResponseDto==null}">
+				<div class="wrapper">
+					<div class="title"><h1 style="font-size: 21px;">회원가입</h1></div>
+					<div class="name">
+						<input id="name"  type="text" placeholder="이름을 입력해 주세요.">
+						<div id="nameError" class="error"></div>
+					</div>
+					<div class="phone">
+						<input id="phone" type="text" placeholder="-를 포함해서 입력해 주세요.">
+					</div>
+				</div>
+			</span>
+			<input type="text" value="" th:value="${session.accessToken}">
+		</form>
+			<button onclick="fn_submit()">회원가입</button>
+			<button onclick="fn_logout();">로그아웃</button>
+	</span>
+</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+	function fn_submit() {
+		const phone = document.getElementById('phone').value;
+		const nm = document.getElementById("name").value;
+
+		const regPhone = /^01([0|1|6|7|8|9])-([0-9]{3,4})-([0-9]{4})$/;
+		if (regPhone.test(phone) === false) {
+			console.log('휴대전화번호를 올바르게 입력 부탁드립니다.');
+			return false;
+		}
+
+		$.ajax({
+			type:"POST",
+			dataType: "json",
+			contentType:"application/json;charset=UTF-8",
+			url: "/join",
+			data: JSON.stringify({
+				"nm": nm
+				, "phone": phone
+			}),
+			success: function (result) {
+				console.log(result)
+			}
+		});
+	}
+	function fn_logout() {
+		const frm = document.getElementById("frm");
+		frm.action = "/logout";
+		frm.submit();
+	}
+</script>
