@@ -2,10 +2,10 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Insert title here</title>
+  <title>Kakao Login</title>
 </head>
 <body>
-<h1>Kakao Login Test</h1>
+<h1>Kakao Login</h1>
 	<span th:if="${userId==null}">
 		<a href="https://kauth.kakao.com/oauth/authorize?client_id=6449fac14761edba82e6cf5782389e45&redirect_uri=http://localhost:8080/login&response_type=code">
 			<img src = "img/kakao_login_medium_narrow.png">
@@ -13,8 +13,6 @@
 	</span>
 	<span th:if="${userId!=null}">
 		<form id="frm">
-			<input type="text" value="" th:value="${userId}"><br>
-			<input type="text" value="" th:value="${nickname}"><br>
 			<span th:if="${userResponseDto!=null}">
 				<input type="text" value="" th:value="${userResponseDto.nm}"><br>
 				<input type="text" value="" th:value="${userResponseDto.phone}"><br>
@@ -31,7 +29,6 @@
 					</div>
 				</div>
 			</span>
-			<input type="text" value="" th:value="${session.accessToken}">
 		</form>
 			<button onclick="fn_submit()">회원가입</button>
 			<button onclick="fn_logout();">로그아웃</button>
@@ -60,7 +57,8 @@
 				, "phone": phone
 			}),
 			success: function (result) {
-				console.log(result)
+				// console.log(result)
+				fn_locationMain();
 			}
 		});
 	}
@@ -68,5 +66,8 @@
 		const frm = document.getElementById("frm");
 		frm.action = "/logout";
 		frm.submit();
+	}
+	function fn_locationMain(){
+		location.href = "/main";
 	}
 </script>
