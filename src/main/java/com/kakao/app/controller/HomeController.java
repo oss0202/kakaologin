@@ -48,10 +48,14 @@ public class HomeController {
         }
 
 
-        mav.addObject("userId", userInfo.get("email"));
-        mav.addObject("nickname", userInfo.get("nickname"));
-        mav.addObject("userResponseDto", userResponseDto);
-        mav.setViewName("index");
+        if( userResponseDto != null){
+            mav.setViewName("redirect:/main");
+        }else{
+            mav.addObject("userId", userInfo.get("email"));
+            mav.addObject("nickname", userInfo.get("nickname"));
+            mav.addObject("userResponseDto", userResponseDto);
+            mav.setViewName("index");
+        }
         return mav;
     }
 
