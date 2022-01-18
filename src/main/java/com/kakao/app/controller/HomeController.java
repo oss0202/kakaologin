@@ -66,6 +66,7 @@ public class HomeController {
         kakaoApi.kakaoLogout((String)session.getAttribute("accessToken"));
         session.removeAttribute("accessToken");
         session.removeAttribute("userId");
+
         mav.setViewName("index");
         return mav;
     }
